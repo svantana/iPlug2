@@ -136,6 +136,9 @@ public:
 
   Steinberg::tresult PLUGIN_API setContentScaleFactor(ScaleFactor factor) override
   {
+#ifdef OS_MAC
+    return Steinberg::kResultFalse;
+#endif
     mOwner.SetScreenScale(factor);
 
     return Steinberg::kResultOk;
