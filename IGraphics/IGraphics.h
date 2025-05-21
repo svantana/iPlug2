@@ -525,7 +525,7 @@ public:
    * IControl* pOwner The control that owns the layer
    * @param r The bounds of the layer within the IGraphics context
    * @param cacheable Used to make sure the underlying bitmap can be shared between plug-in instances */
-  void StartLayer(IControl* pOwner, const IRECT& r, bool cacheable = false);
+  void StartLayer(IControl* pOwner, const IRECT& r, bool cacheable = false, bool useFloat32 = false);
   
   /** If a layer already exists, continue drawing to it
    * @param layer the layer to resume */
@@ -1620,6 +1620,9 @@ public:
    * @param y Where the Y position will be stored */
   void GetMouseDownPoint(float& x, float&y) const { x = mMouseDownX; y = mMouseDownY; }
   
+  /** Get the current mouse down state. */
+  bool GetMouseIsDown() const { return mMouseIsDown; }
+  
   /**  Set by the platform class if the mouse input is coming from a tablet/stylus
    * @param tablet \c true means input is from a tablet */
   void SetTabletInput(bool tablet) { mTabletInput = tablet; }
@@ -1740,8 +1743,9 @@ protected:
    * @param scale The scale in relation to 1:1 pixels
    * @param drawScale The current draw scale for the graphics context
    * @param cacheable Used to make sure the underlying bitmap can be shared between plug-in instances
+   * @param useFloat32 Use 32-bit floats as the pixel format for the bitmap. Default is uint8.
    * @return APIBitmap* The new API Bitmap */
-  virtual APIBitmap* CreateAPIBitmap(int width, int height, float scale, double drawScale, bool cacheable = false) = 0;
+  virtual APIBitmap* CreateAPIBitmap(int width, int height, float scale, double drawScale, bool cacheable = false, bool useFloat32 = false) = 0;
 
   /** Drawing API method to load a font from a PlatformFontPtr, called internally
    * @param fontID A CString that will be used to reference the font
@@ -1860,6 +1864,7 @@ private:
   int mMouseOverIdx = -1;
   float mMouseDownX = -1.f;
   float mMouseDownY = -1.f;
+  bool mMouseIsDown = false;
   float mMinScale;
   float mMaxScale;
   int mLastClickedParam = kNoParameter;
