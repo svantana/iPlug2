@@ -655,6 +655,16 @@ static CVReturn displayLinkCallback(CVDisplayLinkRef displayLink, const CVTimeSt
                                                  name:NSViewGlobalFrameDidChangeNotification
                                                object:self];
     #endif
+#if APP_NO_CHROME
+    pWindow.styleMask |= NSWindowStyleMaskResizable | NSWindowStyleMaskFullSizeContentView;
+    pWindow.titlebarAppearsTransparent = YES;
+    pWindow.titleVisibility = NSWindowTitleHidden; // Remove the window title text
+    pWindow.titlebarSeparatorStyle = NSTitlebarSeparatorStyleNone; // Use the “unified title and toolbar” look
+    pWindow.movableByWindowBackground = YES;
+#endif
+#if APP_FULLSCREENABLE
+    pWindow.collectionBehavior |= NSWindowCollectionBehaviorFullScreenPrimary;
+#endif
     
 //    [[NSNotificationCenter defaultCenter] addObserver:self
 //                                             selector:@selector(windowResized:) name:NSWindowDidEndLiveResizeNotification
@@ -829,7 +839,14 @@ static CVReturn displayLinkCallback(CVDisplayLinkRef displayLink, const CVTimeSt
     else
     {
       std::vector<IMouseInfo> list {info};
+#if APP_NO_CHROME
+      int numCaught = mGraphics->OnMouseDown(list);
+      if (numCaught == 0) {
+        [self.window performWindowDragWithEvent:pEvent];
+      }
+#else
       mGraphics->OnMouseDown(list);
+#endif
     }
   }
 }
@@ -1265,6 +1282,7 @@ static void MakeCursorFromName(NSCursor*& cursor, const char *name)
 
   [self addSubview: mTextFieldView];
   NSWindow* pWindow = [self window];
+  [NSApp activateIgnoringOtherApps:YES];
   [pWindow makeKeyAndOrderFront:nil];
   [pWindow makeFirstResponder: mTextFieldView];
 }

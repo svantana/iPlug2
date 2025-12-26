@@ -254,6 +254,8 @@ void IGraphics::SetControlValueAfterTextEdit(const char* str)
 
 void IGraphics::SetControlValueAfterPopupMenu(IPopupMenu* pMenu)
 {
+  if (!pMenu)
+    return;
   if (!mInPopupMenu)
     return;
   
@@ -981,11 +983,12 @@ void IGraphics::SetStrictDrawing(bool strict)
   SetAllControlsDirty();
 }
 
-void IGraphics::OnMouseDown(const std::vector<IMouseInfo>& points)
+int IGraphics::OnMouseDown(const std::vector<IMouseInfo>& points)
 {
 //  Trace("IGraphics::OnMouseDown", __LINE__, "x:%0.2f, y:%0.2f, mod:LRSCA: %i%i%i%i%i", x, y, mod.L, mod.R, mod.S, mod.C, mod.A);
 
   bool singlePoint = points.size() == 1;
+  int numCapturedPoints = 0;
 
   if(singlePoint)
   {
@@ -1004,6 +1007,7 @@ void IGraphics::OnMouseDown(const std::vector<IMouseInfo>& points)
     
     if (pCapturedControl)
     {
+      numCapturedPoints++;
       int nVals = pCapturedControl->NVals();
 #if defined AAX_API || !defined IGRAPHICS_NO_CONTEXT_MENU
       int valIdx = pCapturedControl->GetValIdxForPos(x, y);
@@ -1066,6 +1070,7 @@ void IGraphics::OnMouseDown(const std::vector<IMouseInfo>& points)
       pCapturedControl->OnMouseDown(x, y, mod);
     }
   }
+  return numCapturedPoints;
 }
 
 void IGraphics::OnMouseUp(const std::vector<IMouseInfo>& points)

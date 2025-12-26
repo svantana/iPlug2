@@ -1524,8 +1524,10 @@ private:
   
 #pragma mark - Event handling
 public:
-  /** Called when the platform class sends mouse down events */
-  void OnMouseDown(const std::vector<IMouseInfo>& points);
+  /** Called when the platform class sends mouse down events
+   * @param points vector of mouse/touch position data
+   * @return int number of handled points */
+  int OnMouseDown(const std::vector<IMouseInfo>& points);
 
   /** Called when the platform class sends mouse up events */
   void OnMouseUp(const std::vector<IMouseInfo>& points);
