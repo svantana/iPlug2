@@ -658,12 +658,9 @@ static CVReturn displayLinkCallback(CVDisplayLinkRef displayLink, const CVTimeSt
 #if APP_NO_CHROME
     pWindow.styleMask |= NSWindowStyleMaskResizable | NSWindowStyleMaskFullSizeContentView;
     pWindow.titlebarAppearsTransparent = YES;
-    pWindow.titleVisibility = NSWindowTitleHidden; // Remove the window title text
+    //pWindow.titleVisibility = NSWindowTitleHidden; // Remove the window title text - this line doesn't seem necessary and also it makes the app ignore keyboard input until there has been a mousedown
     pWindow.titlebarSeparatorStyle = NSTitlebarSeparatorStyleNone; // Use the “unified title and toolbar” look
     pWindow.movableByWindowBackground = YES;
-#endif
-#if APP_FULLSCREENABLE
-    pWindow.collectionBehavior |= NSWindowCollectionBehaviorFullScreenPrimary;
 #endif
     
 //    [[NSNotificationCenter defaultCenter] addObserver:self
