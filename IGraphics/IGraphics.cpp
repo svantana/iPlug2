@@ -1057,7 +1057,7 @@ int IGraphics::OnMouseDown(const std::vector<IMouseInfo>& points)
       {
         ReleaseMouseCapture();
         PopupHostContextMenuForParam(pCapturedControl, paramIdx, x, y);
-        return;
+        return 1;
       }
 #endif
 
