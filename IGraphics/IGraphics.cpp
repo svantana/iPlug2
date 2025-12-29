@@ -1286,6 +1286,12 @@ bool IGraphics::OnKeyUp(float x, float y, const IKeyPress& key)
   return handled;
 }
 
+void IGraphics::OnKeyModifier(const IKeyPress &key) {
+  if (mKeyModifierHandlerFunc) {
+    mKeyModifierHandlerFunc(key);
+  }
+}
+
 void IGraphics::OnDrop(const char* str, float x, float y)
 {
   IControl* pControl = GetMouseControl(x, y, false);

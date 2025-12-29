@@ -991,6 +991,16 @@ static CVReturn displayLinkCallback(CVDisplayLinkRef displayLink, const CVTimeSt
   }
 }
 
+- (void)flagsChanged:(NSEvent *)event {
+  NSEventModifierFlags mod = event.modifierFlags & NSEventModifierFlagDeviceIndependentFlagsMask;
+  IKeyPress key("", 0);
+  key.S = mod & NSShiftKeyMask;
+  key.C = mod & NSCommandKeyMask;
+  key.A = mod & NSAlternateKeyMask;
+
+  mGraphics->OnKeyModifier(key);
+}
+
 - (void) scrollWheel: (NSEvent*) pEvent
 {
   if (mTextFieldView) [self endUserInput ];

@@ -1221,6 +1221,10 @@ public:
   /** Set a function that is called when key presses are not intercepted by any controls
    * @param keyHandlerFunc A std::function conforming to IKeyHandlerFunc  */
   void SetKeyHandlerFunc(IKeyHandlerFunc func) { mKeyHandlerFunc = func; }
+  
+  /** Set a function that is called when modifier keys are pressed or released
+   * @param func A std::function conforming to IKeyModifierHandlerFunc  */
+  void SetKeyModifierHandlerFunc(IKeyModifierHandlerFunc func) { mKeyModifierHandlerFunc = func; }
 
   /** A helper to set the IGraphics KeyHandlerFunc in order to make an instrument playable via QWERTY keys
    * @param func A function to do something when a MIDI message is triggered */
@@ -1563,6 +1567,9 @@ public:
    * @return \c true if handled */
   bool OnKeyUp(float x, float y, const IKeyPress& key);
   
+  /** @param key Info about the keypress*/
+  void OnKeyModifier(const IKeyPress &key);
+  
   /** @param x The X coordinate at which to draw
    * @param y The Y coordinate at which to draw
    * @param mod IMouseMod struct contain information about the modifiers held
@@ -1867,6 +1874,7 @@ private:
   EUIResizerMode mGUISizeMode = EUIResizerMode::Scale;
   double mPrevTimestamp = 0.;
   IKeyHandlerFunc mKeyHandlerFunc = nullptr;
+  IKeyModifierHandlerFunc mKeyModifierHandlerFunc = nullptr;
   IDisplayTickFunc mDisplayTickFunc = nullptr;
   IUIAppearanceChangedFunc mAppearanceChangedFunc = nullptr;
   
