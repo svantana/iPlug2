@@ -1306,6 +1306,7 @@ void IGraphics::OnDropMultiple(const std::vector<const char*>& paths, float x, f
 
 void IGraphics::ReleaseMouseCapture()
 {
+  mMouseIsDown = false;
   mCapturedMap.clear();
   if (mCursorHidden)
     HideMouseCursor(false);
