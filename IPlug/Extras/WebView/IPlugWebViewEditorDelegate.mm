@@ -53,6 +53,7 @@ using namespace iplug;
 }
 - (void) removeFromSuperview;
 - (id) initWithEditorDelegate: (WebViewEditorDelegate*) pDelegate;
+- (BOOL)performKeyEquivalent:(NSEvent *)event;
 @end
 
 @implementation IPLUG_WKWEBVIEW_EDITOR_HELPER
@@ -81,6 +82,19 @@ using namespace iplug;
   mDelegate->CloseWindow();
 #endif
   [super removeFromSuperview];
+}
+
+- (BOOL)performKeyEquivalent:(NSEvent *)event {
+  unsigned short keyCode = [event keyCode];
+    
+  // 123: Left, 124: Right, 125: Down, 126: Up
+  if (keyCode >= 123 && keyCode <= 126) {
+    // Return NO to indicate we are NOT handling this as a
+    // system/menu shortcut. This allows the event to proceed
+    // to the normal keyDown: flow and into the JS engine.
+    return NO;
+  }
+  return [super performKeyEquivalent:event];
 }
 
 @end
